@@ -5,6 +5,7 @@ import com.iris.springbootmall.dto.ProductQueryParams;
 import com.iris.springbootmall.dto.ProductRequestDTO;
 import com.iris.springbootmall.model.Product;
 import com.iris.springbootmall.service.ProductService;
+import com.iris.springbootmall.util.Page;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -31,7 +32,7 @@ public class ProductController {
     private ProductService productService;
     
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<Page<Product>> getProducts(
             // 查詢條件 Filtering
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search,
@@ -52,9 +53,20 @@ public class ProductController {
         productQueryParams.setLimit(limit);
         productQueryParams.setOffset(offset);
         
+        // 取得 product list
         List<Product> productList = productService.getProducts(productQueryParams);
         
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+        // 取得 product 總數
+        Integer total = productService.countProduct(productQueryParams);
+        
+        // 分頁
+        Page<Product> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResults(productList);
+        
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
     
     @GetMapping("/products/{productId}")
