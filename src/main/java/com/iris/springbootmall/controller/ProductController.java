@@ -1,6 +1,7 @@
 package com.iris.springbootmall.controller;
 
 import com.iris.springbootmall.constant.ProductCategory;
+import com.iris.springbootmall.dto.ProductQueryParams;
 import com.iris.springbootmall.dto.ProductRequestDTO;
 import com.iris.springbootmall.model.Product;
 import com.iris.springbootmall.service.ProductService;
@@ -30,7 +31,11 @@ public class ProductController {
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search
             ){
-        List<Product> productList = productService.getProducts(category, search);
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+        
+        List<Product> productList = productService.getProducts(productQueryParams);
         
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }

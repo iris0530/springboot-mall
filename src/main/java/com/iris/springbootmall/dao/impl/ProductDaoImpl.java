@@ -1,7 +1,7 @@
 package com.iris.springbootmall.dao.impl;
 
-import com.iris.springbootmall.constant.ProductCategory;
 import com.iris.springbootmall.dao.ProductDao;
+import com.iris.springbootmall.dto.ProductQueryParams;
 import com.iris.springbootmall.dto.ProductRequestDTO;
 import com.iris.springbootmall.model.Product;
 import com.iris.springbootmall.rowmapper.ProductRowMapper;
@@ -25,7 +25,7 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql = "select product_id, product_name, "
                 + " category, image_url, price, stock, "
                 + " description, created_date, "
@@ -35,14 +35,14 @@ public class ProductDaoImpl implements ProductDao {
         
         Map<String, Object> map = new HashMap<>();
         
-        if(!ObjectUtils.isEmpty(category)) {
+        if(!ObjectUtils.isEmpty(productQueryParams.getCategory())) {
             sql = sql + " and category = :category";
-            map.put("category", category.name());
+            map.put("category", productQueryParams.getCategory().name());
         }
         
-        if(!ObjectUtils.isEmpty(search)) {
+        if(!ObjectUtils.isEmpty(productQueryParams.getSearch())) {
             sql = sql + " and product_name like concat('%', :search, '%') ";
-            map.put("search", search);
+            map.put("search", productQueryParams.getSearch());
         }
         
         return namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
