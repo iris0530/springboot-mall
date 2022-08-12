@@ -31,4 +31,10 @@ public class ProductServiceImpl implements ProductService {
         productDao.updateProduct(productId, productRequestDTO);  
     }
 
+    @Override
+    @Transactional
+    public void deleteProductById(Integer productId) {
+        productDao.deleteProductById(productId);
+    }
+
 }
