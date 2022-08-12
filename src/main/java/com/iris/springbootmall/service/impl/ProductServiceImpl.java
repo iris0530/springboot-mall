@@ -4,6 +4,7 @@ import com.iris.springbootmall.dao.ProductDao;
 import com.iris.springbootmall.dto.ProductRequestDTO;
 import com.iris.springbootmall.model.Product;
 import com.iris.springbootmall.service.ProductService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductDao productDao;
+    
+    @Override
+    public List<Product> getProducts() {
+        return productDao.getProducts();
+    }
     
     @Override
     public Product getProductById(Integer productId) {
@@ -36,5 +42,4 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProductById(Integer productId) {
         productDao.deleteProductById(productId);
     }
-
 }

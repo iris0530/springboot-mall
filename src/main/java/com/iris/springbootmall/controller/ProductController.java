@@ -3,6 +3,7 @@ package com.iris.springbootmall.controller;
 import com.iris.springbootmall.dto.ProductRequestDTO;
 import com.iris.springbootmall.model.Product;
 import com.iris.springbootmall.service.ProductService;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,13 @@ public class ProductController {
     
     @Autowired
     private ProductService productService;
+    
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getProducts(){
+        List<Product> productList = productService.getProducts();
+        
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
     
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
