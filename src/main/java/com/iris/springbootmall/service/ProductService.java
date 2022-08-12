@@ -1,12 +1,13 @@
 package com.iris.springbootmall.service;
 
+import com.iris.springbootmall.constant.ProductCategory;
 import com.iris.springbootmall.dto.ProductRequestDTO;
 import com.iris.springbootmall.model.Product;
 import java.util.List;
 
 public interface ProductService {
     
-    List<Product> getProducts();
+    List<Product> getProducts(ProductCategory category, String search);
 
     Product getProductById(Integer productId);
 

@@ -1,5 +1,6 @@
 package com.iris.springbootmall.dao.impl;
 
+import com.iris.springbootmall.constant.ProductCategory;
 import com.iris.springbootmall.dao.ProductDao;
 import com.iris.springbootmall.dto.ProductRequestDTO;
 import com.iris.springbootmall.model.Product;
@@ -15,6 +16,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 @Component
 public class ProductDaoImpl implements ProductDao {
@@ -23,18 +25,27 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public List<Product> getProducts() {
+    public List<Product> getProducts(ProductCategory category, String search) {
         String sql = "select product_id, product_name, "
                 + " category, image_url, price, stock, "
                 + " description, created_date, "
                 + " last_modified_date "
-                + " from product ";
+                + " from product "
+                + " where 1 = 1";
         
         Map<String, Object> map = new HashMap<>();
         
-        List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
+        if(!ObjectUtils.isEmpty(category)) {
+            sql = sql + " and category = :category";
+            map.put("category", category.name());
+        }
         
-        return productList;       
+        if(!ObjectUtils.isEmpty(search)) {
+            sql = sql + " and product_name like concat('%', :search, '%') ";
+            map.put("search", search);
+        }
+        
+        return namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
     }
     
     @Override
