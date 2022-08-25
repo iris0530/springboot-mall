@@ -2,7 +2,7 @@ package com.iris.springbootmall.service.impl;
 
 import com.iris.springbootmall.dao.UserDao;
 import com.iris.springbootmall.dto.UserLoginRequest;
-import com.iris.springbootmall.dto.UserRgisterRequest;
+import com.iris.springbootmall.dto.UserRegisterRequest;
 import com.iris.springbootmall.model.User;
 import com.iris.springbootmall.service.UserService;
 import org.slf4j.Logger;
@@ -24,21 +24,21 @@ public class UserServiceImpl implements UserService {
     
     @Transactional
     @Override
-    public Integer register(UserRgisterRequest userRgisterRequest) {
+    public Integer register(UserRegisterRequest userRegisterRequest) {
         // 檢查註冊的 email
-        User user = userDao.getUserByEmail(userRgisterRequest.getEmail());
+        User user = userDao.getUserByEmail(userRegisterRequest.getEmail());
         
         if(null != user) {
-            log.warn("該 email {} 已經被註冊", userRgisterRequest.getEmail());
+            log.warn("該 email {} 已經被註冊", userRegisterRequest.getEmail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         
         // 使用 MD5 生成密碼的雜湊值
-        String hashedPassword = DigestUtils.md5DigestAsHex(userRgisterRequest.getPassword().getBytes());
-        userRgisterRequest.setPassword(hashedPassword);
+        String hashedPassword = DigestUtils.md5DigestAsHex(userRegisterRequest.getPassword().getBytes());
+        userRegisterRequest.setPassword(hashedPassword);
         
         // 創建帳號
-        return userDao.createUser(userRgisterRequest);
+        return userDao.createUser(userRegisterRequest);
     }
     
     @Override

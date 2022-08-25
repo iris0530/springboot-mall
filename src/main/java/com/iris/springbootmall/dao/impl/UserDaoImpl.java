@@ -1,7 +1,7 @@
 package com.iris.springbootmall.dao.impl;
 
 import com.iris.springbootmall.dao.UserDao;
-import com.iris.springbootmall.dto.UserRgisterRequest;
+import com.iris.springbootmall.dto.UserRegisterRequest;
 import com.iris.springbootmall.model.User;
 import com.iris.springbootmall.rowmapper.UserRowMapper;
 import java.time.LocalDateTime;
@@ -23,13 +23,13 @@ public class UserDaoImpl implements UserDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public Integer createUser(UserRgisterRequest userRgisterRequest) {
+    public Integer createUser(UserRegisterRequest userRegisterRequest) {
         String sql = " INSERT INTO user(email, password, created_date, last_modified_date) "
                 + " VALUES (:email, :password, :createdDate, :lastModifiedDate) ";
         
         Map<String, Object> map = new HashMap<>();
-        map.put("email", userRgisterRequest.getEmail());
-        map.put("password", userRgisterRequest.getPassword());
+        map.put("email", userRegisterRequest.getEmail());
+        map.put("password", userRegisterRequest.getPassword());
         
         map.put("createdDate", LocalDateTime.now());
         map.put("lastModifiedDate", LocalDateTime.now());

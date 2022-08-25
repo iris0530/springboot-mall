@@ -1,11 +1,11 @@
 package com.iris.springbootmall.dao;
 
-import com.iris.springbootmall.dto.UserRgisterRequest;
+import com.iris.springbootmall.dto.UserRegisterRequest;
 import com.iris.springbootmall.model.User;
 
 public interface UserDao {
 
-    Integer createUser(UserRgisterRequest userRgisterRequest);
+    Integer createUser(UserRegisterRequest userRegisterRequest);
 
     User getUserById(Integer userId);
 

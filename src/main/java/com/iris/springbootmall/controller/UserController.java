@@ -1,7 +1,7 @@
 package com.iris.springbootmall.controller;
 
 import com.iris.springbootmall.dto.UserLoginRequest;
-import com.iris.springbootmall.dto.UserRgisterRequest;
+import com.iris.springbootmall.dto.UserRegisterRequest;
 import com.iris.springbootmall.model.User;
 import com.iris.springbootmall.service.UserService;
 import javax.validation.Valid;
@@ -19,8 +19,8 @@ public class UserController {
     private UserService userService;
     
     @PostMapping("/users/register")
-    public ResponseEntity<User> register(@RequestBody @Valid UserRgisterRequest userRgisterRequest) {
-        Integer userId = userService.register(userRgisterRequest);
+    public ResponseEntity<User> register(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
+        Integer userId = userService.register(userRegisterRequest);
         
         User user = userService.getUserById(userId);
         
